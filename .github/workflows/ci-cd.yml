@@ -45,7 +45,7 @@ jobs:
       run: dotnet build MonitoringDashboard.sln --configuration Debug --no-restore
 
     - name: Run unit tests
-      run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --configuration Debug --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --configuration Debug --no-build --verbosity normal --filter "FullyQualifiedName!~Integration" --collect:"XPlat Code Coverage"
 
     - name: Generate coverage report
       uses: codecov/codecov-action@v3

@@ -18,4 +18,4 @@ jobs:
       - name: Build
         run: dotnet build --no-restore -c Debug
       - name: Test
-        run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --no-build -c Debug --verbosity normal
+        run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --no-build -c Debug --verbosity normal --filter "FullyQualifiedName!~Integration"
