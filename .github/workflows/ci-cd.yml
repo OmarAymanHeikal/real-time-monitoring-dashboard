@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  DOTNET_VERSION: '9.0.x'
+  DOTNET_VERSION: '10.0.x'
   NODE_VERSION: '20.x'
 
 jobs:
@@ -42,10 +42,10 @@ jobs:
       run: dotnet restore MonitoringDashboard.sln
 
     - name: Build solution
-      run: dotnet build MonitoringDashboard.sln --configuration Release --no-restore
+      run: dotnet build MonitoringDashboard.sln --configuration Debug --no-restore
 
     - name: Run unit tests
-      run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test tests/MonitoringDashboard.Tests/MonitoringDashboard.Tests.csproj --configuration Debug --no-build --verbosity normal --collect:"XPlat Code Coverage"
 
     - name: Generate coverage report
       uses: codecov/codecov-action@v3
