@@ -1,0 +1,86 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+// Define color palettes
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
+$warn: mat.define-palette(mat.$red-palette);
+
+// Light theme
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn
+  )
+));
+
+// Dark theme
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: mat.define-palette(mat.$blue-palette),
+    accent: mat.define-palette(mat.$amber-palette),
+    warn: $warn
+  )
+));
+
+// Apply light theme by default
+@include mat.all-component-themes($light-theme);
+
+// Apply dark theme when dark-theme class is on body
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+  
+  background-color: #303030;
+  color: #ffffff;
+  
+  .mat-toolbar {
+    background-color: #212121;
+  }
+  
+  .mat-card {
+    background-color: #424242;
+    color: #ffffff;
+  }
+  
+  .mat-table {
+    background-color: #424242;
+    
+    th, td {
+      color: #ffffff;
+    }
+  }
+}
+
+// Light theme explicit styling
+.light-theme {
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container { 
+  padding: 16px; 
+}
+
+// Snackbar styling
+.info-snackbar {
+  background-color: #2196F3 !important;
+  color: white !important;
+}
+
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.warn-snackbar {
+  background-color: #ff9800 !important;
+  color: white !important;
+}

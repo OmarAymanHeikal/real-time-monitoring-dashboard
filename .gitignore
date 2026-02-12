@@ -1,0 +1,44 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# Angular
+node_modules/
+dist/
+.angular/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment & Secrets
+*.env
+appsettings.Local.json
+**/appsettings.*.local.json
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+
+# Test results
+TestResults/
+coverage/
+
+# Docker
+.dockerignore
+
+# Generated Reports
+**/Reports/*.html
+**/Reports/*.pdf

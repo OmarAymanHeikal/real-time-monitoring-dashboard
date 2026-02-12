@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 8080
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY ["src/MonitoringDashboard.WebAPI/MonitoringDashboard.WebAPI.csproj", "src/MonitoringDashboard.WebAPI/"]
+COPY ["src/MonitoringDashboard.Infrastructure/MonitoringDashboard.Infrastructure.csproj", "src/MonitoringDashboard.Infrastructure/"]
+COPY ["src/MonitoringDashboard.Application/MonitoringDashboard.Application.csproj", "src/MonitoringDashboard.Application/"]
+COPY ["src/MonitoringDashboard.Domain/MonitoringDashboard.Domain.csproj", "src/MonitoringDashboard.Domain/"]
+RUN dotnet restore "src/MonitoringDashboard.WebAPI/MonitoringDashboard.WebAPI.csproj"
+COPY src/ src/
+WORKDIR /src
+RUN dotnet build src/MonitoringDashboard.WebAPI/MonitoringDashboard.WebAPI.csproj -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish src/MonitoringDashboard.WebAPI/MonitoringDashboard.WebAPI.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MonitoringDashboard.WebAPI.dll"]

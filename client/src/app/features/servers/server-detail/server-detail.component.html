@@ -1,0 +1,137 @@
+<div class="server-detail" *ngIf="server">
+  <div class="header">
+    <div>
+      <h1>{{ server.name }}</h1>
+      <p class="description">{{ server.description }}</p>
+    </div>
+    <button mat-raised-button routerLink="/servers" color="primary">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Servers
+    </button>
+  </div>
+
+  <!-- Server Info Card -->
+  <mat-card class="info-card">
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <mat-icon>computer</mat-icon>
+          <div class="info-content">
+            <span class="label">Server ID</span>
+            <span class="value">{{ server.serverId }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>lan</mat-icon>
+          <div class="info-content">
+            <span class="label">IP Address</span>
+            <span class="value">{{ server.ipAddress }}</span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <mat-icon>circle</mat-icon>
+          <div class="info-content">
+            <span class="label">Status</span>
+            <mat-chip [color]="getStatusColor(server.status)" highlighted>
+              {{ server.status }}
+            </mat-chip>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Latest Metrics Card -->
+  <mat-card class="metrics-card" *ngIf="latestMetric">
+    <mat-card-header>
+      <mat-card-title>Current Metrics</mat-card-title>
+      <span class="live-indicator">
+        <mat-icon>fiber_manual_record</mat-icon>
+        LIVE
+      </span>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <mat-icon [class.high]="latestMetric.cpuUsage > 80">memory</mat-icon>
+          <div class="metric-info">
+            <span class="metric-label">CPU Usage</span>
+            <span class="metric-value" [class.high]="latestMetric.cpuUsage > 80">
+              {{ latestMetric.cpuUsage | number:'1.1-1' }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="metric-box">
+          <mat-icon [class.high]="latestMetric.memoryUsage > 80">storage</mat-icon>
+          <div class="metric-info">
+            <span class="metric-label">Memory Usage</span>
+            <span class="metric-value" [class.high]="latestMetric.memoryUsage > 80">
+              {{ latestMetric.memoryUsage | number:'1.1-1' }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="metric-box">
+          <mat-icon [class.high]="latestMetric.diskUsage > 80">sd_storage</mat-icon>
+          <div class="metric-info">
+            <span class="metric-label">Disk Usage</span>
+            <span class="metric-value" [class.high]="latestMetric.diskUsage > 80">
+              {{ latestMetric.diskUsage | number:'1.1-1' }}%
+            </span>
+          </div>
+        </div>
+
+        <div class="metric-box">
+          <mat-icon>speed</mat-icon>
+          <div class="metric-info">
+            <span class="metric-label">Response Time</span>
+            <span class="metric-value">
+              {{ latestMetric.responseTime | number:'1.0-0' }} ms
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="timestamp">Last updated: {{ latestMetric.timestamp | date:'medium' }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Charts -->
+  <div class="charts-container">
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Resource Usage Over Time</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-wrapper">
+          <canvas baseChart
+            [data]="metricsChartData"
+            [options]="chartOptions"
+            type="line">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Response Time History</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-wrapper">
+          <canvas baseChart
+            [data]="responseTimeChartData"
+            [options]="responseTimeChartOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf="!server" class="loading">
+  <p>Loading server details...</p>
+</div>

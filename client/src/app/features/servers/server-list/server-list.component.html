@@ -1,0 +1,60 @@
+<div class="server-list">
+  <div class="header">
+    <h1>Servers</h1>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Add Server
+    </button>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="servers-table">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Server Name</th>
+          <td mat-cell *matCellDef="let server">
+            <strong>{{ server.name }}</strong>
+            <br>
+            <small class="description">{{ server.description }}</small>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ipAddress">
+          <th mat-header-cell *matHeaderCellDef>IP Address</th>
+          <td mat-cell *matCellDef="let server">{{ server.ipAddress }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let server">
+            <mat-chip [color]="getStatusColor(server.status)" highlighted>
+              {{ server.status }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let server">
+            <button mat-icon-button [routerLink]="['/servers', server.serverId]" color="primary">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: cols" class="server-row"></tr>
+      </table>
+
+      @if (dataSource.data.length === 0) {
+        <div class="no-data">
+          <mat-icon>dns</mat-icon>
+          <p>No servers found</p>
+          <button mat-raised-button color="primary" (click)="openCreateDialog()">
+            Add Your First Server
+          </button>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

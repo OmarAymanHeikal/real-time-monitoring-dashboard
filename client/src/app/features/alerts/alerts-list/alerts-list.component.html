@@ -1,0 +1,79 @@
+<div class="alerts-list">
+  <div class="header">
+    <h1>Alerts</h1>
+    <div class="stats">
+      <mat-chip color="warn" highlighted>
+        {{ activeAlertsCount }} Active
+      </mat-chip>
+    </div>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" class="alerts-table">
+        <ng-container matColumnDef="severity">
+          <th mat-header-cell *matHeaderCellDef>Severity</th>
+          <td mat-cell *matCellDef="let alert">
+            <mat-icon [style.color]="getSeverityColor(alert.metricType, alert.currentValue, alert.threshold)">
+              {{ getSeverityIcon(alert.metricType, alert.currentValue, alert.threshold) }}
+            </mat-icon>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="serverName">
+          <th mat-header-cell *matHeaderCellDef>Server</th>
+          <td mat-cell *matCellDef="let alert">
+            <span class="server-name">{{ alert.serverName || 'Server ' + alert.serverId }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="metricType">
+          <th mat-header-cell *matHeaderCellDef>Metric Type</th>
+          <td mat-cell *matCellDef="let alert">
+            <strong>{{ alert.metricType }}</strong>
+            <br>
+            <small>{{ alert.message }}</small>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>Value / Threshold</th>
+          <td mat-cell *matCellDef="let alert">
+            <span class="value-display">
+              <strong>{{ alert.currentValue | number:'1.1-1' }}</strong>
+              /
+              {{ alert.threshold | number:'1.1-1' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="triggeredAt">
+          <th mat-header-cell *matHeaderCellDef>Triggered At</th>
+          <td mat-cell *matCellDef="let alert">
+            {{ alert.triggeredAt | date:'short' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let alert">
+            <mat-chip [color]="getStatusColor(alert.status)" highlighted>
+              {{ alert.status }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="cols"></tr>
+        <tr mat-row *matRowDef="let row; columns: cols" class="alert-row"></tr>
+      </table>
+
+      @if (dataSource.data.length === 0) {
+        <div class="no-data">
+          <mat-icon>check_circle</mat-icon>
+          <p>No alerts at this time</p>
+          <small>You'll be notified when thresholds are exceeded</small>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

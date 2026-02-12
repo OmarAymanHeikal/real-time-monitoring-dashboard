@@ -1,0 +1,78 @@
+<div class="jobs-page">
+  <div class="header">
+    <div>
+      <h1>Background Jobs</h1>
+      <p class="subtitle">Automated tasks running via Hangfire</p>
+    </div>
+    <button mat-raised-button color="primary" (click)="openHangfire()">
+      <mat-icon>open_in_new</mat-icon>
+      Open Hangfire Dashboard
+    </button>
+  </div>
+
+  <mat-card class="info-card">
+    <mat-card-content>
+      <div class="info-banner">
+        <mat-icon>info</mat-icon>
+        <div>
+          <strong>Hangfire Dashboard</strong>
+          <p>For detailed job monitoring, execution history, and manual job management, visit the Hangfire dashboard at <a [href]="hangfireUrl" target="_blank">{{ hangfireUrl }}</a></p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Configured Jobs</h2>
+  
+  <div class="jobs-grid">
+    @for (job of jobs; track job.name) {
+      <mat-card class="job-card">
+        <mat-card-header>
+          <mat-icon [color]="job.color" mat-card-avatar>{{ job.icon }}</mat-icon>
+          <mat-card-title>{{ job.name }}</mat-card-title>
+          <mat-card-subtitle>{{ job.type }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="job-detail">
+            <mat-icon>access_time</mat-icon>
+            <span>{{ job.schedule }}</span>
+          </div>
+          <p class="job-description">{{ job.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <mat-card class="types-card">
+    <mat-card-header>
+      <mat-card-title>Job Types</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon color="primary">autorenew</mat-icon>
+          <div matListItemTitle><strong>Recurring Jobs</strong></div>
+          <div matListItemLine>Execute automatically at specified intervals using CRON expressions</div>
+        </mat-list-item>
+        
+        <mat-list-item>
+          <mat-icon matListItemIcon color="accent">play_arrow</mat-icon>
+          <div matListItemTitle><strong>Fire-and-Forget Jobs</strong></div>
+          <div matListItemLine>Execute once immediately or at a specified time, then complete</div>
+        </mat-list-item>
+        
+        <mat-list-item>
+          <mat-icon matListItemIcon color="warn">schedule</mat-icon>
+          <div matListItemTitle><strong>Delayed Jobs</strong></div>
+          <div matListItemLine>Execute after a specified delay from the time of creation</div>
+        </mat-list-item>
+        
+        <mat-list-item>
+          <mat-icon matListItemIcon>link</mat-icon>
+          <div matListItemTitle><strong>Continuation Jobs</strong></div>
+          <div matListItemLine>Execute automatically after another job completes successfully</div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>
