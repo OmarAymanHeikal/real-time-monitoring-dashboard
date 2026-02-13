@@ -99,9 +99,14 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<RequestResponseLoggingMiddleware>();
 app.UseIpRateLimiting();
 app.UseSerilogRequestLogging();
+
+// Routing must be before CORS for SignalR
+app.UseRouting();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map endpoints
 app.MapControllers();
 app.UseHangfireDashboard("/hangfire", new DashboardOptions
 {
